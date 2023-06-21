@@ -1,10 +1,14 @@
 pipeline {
     agent any
     def app
+
     stages {
         stage('Clone repository') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
+
         stage('Build backend and push image') {
             when {
                 branch 'main'
@@ -21,6 +25,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build frontend and push image') {
             when {
                 branch 'main'
