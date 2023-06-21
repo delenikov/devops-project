@@ -15,7 +15,7 @@ node {
                 }
             }
         }
-
+    }
     stage('Build frontend and push image') {
         steps {
             dir('devops-frontend') {
