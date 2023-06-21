@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  # Database
+  database:
+    container_name: database-ctr
+    image: postgres:15.3-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=devops
+      - POSTGRES_USER=postgresql
+      - POSTGRES_PASSWORD=devops
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  # Backend
+  backend:
+    container_name: backend-ctr
+    build:
+      context: devops-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/devops
+      - SPRING_DATASOURCE_USERNAME=postgresql
+      - SPRING_DATASOURCE_PASSWORD=devops
+    depends_on:
+      - database
+    restart: on-failure
+
+  # Frontend
+  frontend:
+    container_name: frontend-ctr
+    build:
+      context: devops-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: on-failure
+
+volumes:
+  db:
+    driver: local
