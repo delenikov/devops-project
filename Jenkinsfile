@@ -6,6 +6,9 @@ pipeline {
             checkout scm
         }
         stage('Build backend and push image') {
+            when {
+                branch 'main'
+            }
             steps {
                 dir('devops-backend') {
                     sh 'mvn -B -DskipTests clean package'
@@ -19,6 +22,9 @@ pipeline {
             }
         }
         stage('Build frontend and push image') {
+            when {
+                branch 'main'
+            }
             steps {
                 dir('devops-frontend') {
                     app = docker.build("delenikov/devops-project-frontend")
