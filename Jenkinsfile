@@ -14,7 +14,7 @@ node {
         }
     }
     stage('Build and push frontend') {
-        dir('devops-backend') {
+        dir('devops-frontend') {
             app = docker.build("delenikov/devops-project-frontend")
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                 app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
