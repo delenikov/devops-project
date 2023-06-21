@@ -5,7 +5,6 @@ node {
     }
     stage('Build and push backend') {
         dir('devops-backend') {
-            sh 'mvn -B -DskipTests clean package'
             app = docker.build("delenikov/devops-project-backend")
             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                 app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
