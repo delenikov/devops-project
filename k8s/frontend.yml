@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: frontend-ctr
-          image: delenikov/devops-project-frontend:latest
+          image: delenikov/devops-project-frontend:kubernetes
           ports:
             - containerPort: 3000
 ---
