@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8081',
+    baseURL: 'backend-service',
     headers: {
         'Access-Control-Allow-Origin': '*',
     }
