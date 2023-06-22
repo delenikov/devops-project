@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+  namespace: delenikov
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: backend-app
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 300
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        env: backend-app
+    spec:
+      containers:
+        - name: backend-ctr
+          image: delenikov/devops-project-backend:latest
+          ports:
+            - containerPort: 8081
+          env:
+#           - name: SPRING_DATASOURCE_URL
+#             value: jdbc:postgresql://postgres-service:5432/devops
+#           - name: SPRING_DATASOURCE_USERNAME
+#             value: postgresql
+#           - name: SPRING_DATASOURCE_PASSWORD
+#             value: devops
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: database-configmap
+                  key: database-url
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: delenikov
+spec:
+  selector:
+    env: backend-app
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: LoadBalancer
