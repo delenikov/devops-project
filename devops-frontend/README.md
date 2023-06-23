@@ -68,3 +68,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### `  "baseURL: 'http://localhost:8081',` 
+
+This was added in axios.js to work on localhost machine and  
+docker-compose with Dockerfiles.
+
+Before building Docker images for k8s:
+### `  "baseURL: '/api',` 
+
+Also check for this in package.json
+### `  "proxy: 'http://localhost:8081',` 
