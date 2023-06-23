@@ -4,7 +4,7 @@ metadata:
   name: postgres-sts
   namespace: delenikov
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       env: postgres
@@ -22,10 +22,6 @@ spec:
           env:
             - name: POSTGRES_DB
               value: devops
-#           - name: POSTGRES_USER
-#             value: postgresql
-#           - name: POSTGRES_PASSWORD
-#             value: devops
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:

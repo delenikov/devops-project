@@ -4,7 +4,7 @@ metadata:
   name: backend-app
   namespace: delenikov
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       env: backend-app
@@ -23,16 +23,10 @@ spec:
     spec:
       containers:
         - name: backend-ctr
-          image: delenikov/devops-project-backend:latest
+          image: delenikov/devops-project-backend:kubernetes
           ports:
             - containerPort: 8081
           env:
-#           - name: SPRING_DATASOURCE_URL
-#             value: jdbc:postgresql://postgres-service:5432/devops
-#           - name: SPRING_DATASOURCE_USERNAME
-#             value: postgresql
-#           - name: SPRING_DATASOURCE_PASSWORD
-#             value: devops
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                 configMapKeyRef:
@@ -61,4 +55,3 @@ spec:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-  type: LoadBalancer

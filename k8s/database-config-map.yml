@@ -4,4 +4,4 @@ metadata:
   name: database-configmap
   namespace: delenikov
 data:
-  database-url: jdbc:postgresql://postgres-service:5432/devops
+  database-url: "jdbc:postgresql://postgres-service:5432/devops"
