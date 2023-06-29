@@ -1,4 +1,3 @@
-### Settings:
 ___
 Configuration for localhost machine and docker-compose with Dockerfiles:
 ### `  "baseURL: 'http://localhost:8081',`
