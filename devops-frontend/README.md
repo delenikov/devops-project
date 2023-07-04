@@ -1,3 +1,7 @@
+### Prezentiranje proekt:
+
+---
+
 ### Settings:
 ___
 Configuration for localhost machine and docker-compose with Dockerfiles:
