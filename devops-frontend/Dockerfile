@@ -1,14 +1,13 @@
 # Base image
-FROM node:17-alpine as builder
+FROM node:20-alpine as builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the working directory
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --quiet
+RUN npm ci
 
 # Copy the entire application code to the working directory
 COPY . .
@@ -22,5 +21,5 @@ RUN npm install -g serve
 EXPOSE 3000
 
 # Set the command to run when the container starts
-CMD ["npx", "serve", "build"]
+CMD ["serve", "-s", "build", "-l", "3000"]
 

@@ -1,20 +1,28 @@
-version: '3.8'
 services:
-  # Database
+  # ======================
+  # Database (PostgreSQL 18.1)
+  # ======================
   database:
     container_name: database-ctr
-    image: postgres:15.3-alpine
+    image: postgres:18.1-alpine
     restart: always
     environment:
-      - POSTGRES_DB=devops
-      - POSTGRES_USER=postgresql
-      - POSTGRES_PASSWORD=devops
+      POSTGRES_DB: devops
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: devops
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgresql -d devops"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # Backend
+  # ======================
+  # Backend (Spring Boot – Java 21)
+  # ======================
   backend:
     container_name: backend-ctr
     build:
@@ -23,14 +31,17 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/devops
-      - SPRING_DATASOURCE_USERNAME=postgresql
-      - SPRING_DATASOURCE_PASSWORD=devops
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/devops
+      SPRING_DATASOURCE_USERNAME: postgresql
+      SPRING_DATASOURCE_PASSWORD: devops
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     restart: on-failure
 
-  # Frontend
+  # ======================
+  # Frontend (React)
+  # ======================
   frontend:
     container_name: frontend-ctr
     build:

@@ -1,25 +1,25 @@
-# Use a base image with JDK and Maven installed
-FROM maven:3.8.1-openjdk-17-slim AS build
+# ======================
+# Build stage (Java 21)
+# ======================
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the pom.xml file to the working directory
+# Copy pom.xml and download dependencies
 COPY pom.xml .
-
-# Download the dependencies
 RUN mvn dependency:go-offline -B
 
-# Copy the source code to the working directory
+# Copy source code
 COPY src ./src
 
 # Build the application
 RUN mvn package -DskipTests
 
-# Use a lightweight base image with JRE to run the application
-FROM openjdk:17-jdk-slim
+# ======================
+# Runtime stage (Java 21)
+# ======================
+FROM eclipse-temurin:21-jre-jammy
 
-# Set the working directory inside the container
 WORKDIR /app
 
 # Copy the built JAR file from the previous stage
